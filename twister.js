@@ -1,10 +1,8 @@
-
 let GAME_ORIENTATION = 'horizontal'; 
 let twistInterval = null;
 
 const Twister = {
     init: function() {
-        
         this.startTwistTimer();
     },
 
@@ -16,10 +14,9 @@ const Twister = {
     startTwistTimer: function() {
         if (twistInterval) clearInterval(twistInterval);
         
-        const randomTime = Math.floor(Math.random() * 7000) + 8000; // 8-15 seconds
+        const randomTime = Math.floor(Math.random() * 7000) + 8000;
         twistInterval = setInterval(() => {
             this.toggleTwist();
-            
             this.startTwistTimer();
         }, randomTime);
     },
@@ -27,7 +24,6 @@ const Twister = {
     toggleTwist: function() {
         if (FLAG === 1 || PLAYGAME === 0) return; 
         GAME_ORIENTATION = (GAME_ORIENTATION === 'horizontal') ? 'vertical' : 'horizontal';
-        
         
         const gameCanvas = document.querySelector("#canvas");
         gameCanvas.style.transition = "transform 0.5s ease";
@@ -40,7 +36,6 @@ const Twister = {
             Text.draw('BACK TO NORMAL!');
         }
 
-        
         this.realignObstacles();
     },
 
@@ -51,11 +46,9 @@ const Twister = {
     },
 
     realignObstacles: function() {
-        
         for (let i = 0; i < LOC.length; i++) {
             let oldX = LOC[i][0];
             let oldY = LOC[i][1];
-            
             
             LOC[i][0] = Math.floor((oldY / CANVAS_HEIGHT) * CANVAS_WIDTH);
             LOC[i][1] = Math.floor((oldX / CANVAS_WIDTH) * CANVAS_HEIGHT);
