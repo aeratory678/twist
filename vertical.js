@@ -1,6 +1,5 @@
 let elem = document.documentElement;
 
-
 const canvas = document.querySelector("#canvas");
 const canvas1 = document.querySelector("#canvas1");
 const ctx = canvas.getContext('2d');
@@ -48,7 +47,6 @@ canvas.width = CANVAS_WIDTH;
 canvas.height = CANVAS_HEIGHT;
 let OBSTACLE_WIDTH = Math.floor((CANVAS_WIDTH - (OBSTACLE_COL_COUNT * 4)) / OBSTACLE_COL_COUNT);
 
-// Initialize Paddle Tracking Positions immediately
 let X = (canvas.width / 2) - (PADDLE_WIDTH / 2);
 let Y = canvas.height - PADDLE_HEIGHT;
 
@@ -160,10 +158,18 @@ const ball = {
         if (this.y - this.radius <= 0)
             this.vy = -this.vy;
 
-        if ((this.x >= X) && (this.x <= X + PADDLE_WIDTH) &&
-            this.y + this.radius < CANVAS_HEIGHT &&
-            this.y + this.radius >= CANVAS_HEIGHT - PADDLE_HEIGHT) {
-            this.vy = -this.vy;
+        if (GAME_ORIENTATION === 'horizontal') {
+            if ((this.x >= X) && (this.x <= X + PADDLE_WIDTH) &&
+                this.y + this.radius < CANVAS_HEIGHT &&
+                this.y + this.radius >= CANVAS_HEIGHT - PADDLE_HEIGHT) {
+                this.vy = -this.vy;
+            }
+        } else {
+            if ((this.y >= Y) && (this.y <= Y + PADDLE_WIDTH) &&
+                this.x + this.radius < CANVAS_WIDTH &&
+                this.x + this.radius >= CANVAS_WIDTH - PADDLE_HEIGHT) {
+                this.vx = -this.vx;
+            }
         }
 
         for (let i = 0; i < LOC.length; i++) {
@@ -176,7 +182,7 @@ const ball = {
                 document.getElementById("curr_score").innerText = `YOUR SCORE : ${CURRENT_SCORE}`;
                 this.vy *= 1.005;
                 this.vx *= 1.005;
-                break; // Break loop to avoid evaluating spliced index mismatch
+                break;
             }
         }
     }
@@ -191,23 +197,19 @@ const paddle = {
         ctx.fillStyle = "#000000";
         ctx.beginPath();
         if (GAME_ORIENTATION === 'horizontal') {
-            // Standard bottom paddle
             ctx.fillRect(this.x, this.y, this.width, this.height);
         } else {
-            // Vertical side paddle on the right wall
             ctx.fillRect(canvas.width - this.height, this.y, this.height, this.width);
         }
         ctx.closePath();
     },
     move: function (e) {
         if (GAME_ORIENTATION === 'horizontal') {
-            
             if (e.offsetX <= 0) this.x = 0;
             else if (e.offsetX >= canvas.width) this.x = canvas.width - PADDLE_WIDTH;
             else this.x = e.offsetX - (PADDLE_WIDTH / 2);
             this.y = canvas.height - PADDLE_HEIGHT; 
         } else {
-            
             if (e.offsetY <= 0) this.y = 0;
             else if (e.offsetY >= canvas.height) this.y = canvas.height - PADDLE_WIDTH; 
             else this.y = e.offsetY - (PADDLE_WIDTH / 2);
@@ -231,12 +233,13 @@ function draw_on_canvas() {
         ball.vy = BALL_VY;
         clearInterval(PLAYGAME);
         clearInterval(CONTROLLER_INTERVAL);
+        Twister.stop();
         if (CURRENT_SCORE > HIGH_SCORE)
             HIGH_SCORE = CURRENT_SCORE;
         CURRENT_SCORE = 0;
         init();
     } else {
-        clear(); // Removed 'document.get' broken line
+        clear();
         ball.draw();
         paddle.draw();
         obstacle.create();
@@ -255,8 +258,6 @@ function init() {
     if (window.screen.width < 800) {
         controller.draw();
     }
-    
-    Text.draw('Click to start playing');
 }
 
 function drawController() {
@@ -276,6 +277,7 @@ function x() {
     setTimeout(() => {
         PLAYGAME = setInterval(draw_on_canvas, 10);
         CONTROLLER_INTERVAL = setInterval(drawController, 10);
+        Twister.init();
     }, 3000);
 }
 
