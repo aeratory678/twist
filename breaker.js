@@ -1,10 +1,7 @@
-
 let playerName = "";
 
 function getPlayerName() {
-    playerName = document
-        .getElementById("playerName")
-        .value;
+    playerName = document.getElementById("playerName").value;
     if (playerName.trim() === "") {
         playerName = "Anonymous";
     }
@@ -12,16 +9,21 @@ function getPlayerName() {
 
 function startGame() {
     getPlayerName();
-    document.getElementById("startScreen")
-        .style.display = "none";
-    document.getElementById("gameScreen")
-        .style.display = "block";
-    Text.draw(`Hello, ${playerName}!
-                       Click to play!`);
-    canvas.removeEventListener('click',
-        startGame);
+    
+    let elem = document.documentElement;
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen().catch(err => console.log("Fullscreen blocked or not supported."));
+    }
+
+    document.getElementById("startScreen").style.style.display = "none";
+    document.getElementById("gameScreen").style.display = "block";
+    
+    init(); 
+    
+    // Set up the personalized greeting text overrides
+    Text.draw(`Hello, ${playerName}! Click to play!`);
+    
     canvas.addEventListener('click', x);
 }
 
-document.getElementById("startButton")
-    .addEventListener("click", startGame);
+document.getElementById("startButton").addEventListener("click", startGame);
