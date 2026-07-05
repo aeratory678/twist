@@ -1,4 +1,4 @@
-# Vantablock
+# Vertiblock
 ## A block game i made with a twist
 ### This is a block breaker game which goes vertcal blocks after a random amount,it isnt tested hehe
 #### Well dont wanna make you wait too much,you could just use the import function if you wanna use it for your own block breaking
