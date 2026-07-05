@@ -15,12 +15,10 @@ function startGame() {
         elem.requestFullscreen().catch(err => console.log("Fullscreen blocked or not supported."));
     }
 
-    document.getElementById("startScreen").style.style.display = "none";
+    document.getElementById("startScreen").style.display = "none";
     document.getElementById("gameScreen").style.display = "block";
     
     init(); 
-    
-    // Set up the personalized greeting text overrides
     Text.draw(`Hello, ${playerName}! Click to play!`);
     
     canvas.addEventListener('click', x);
