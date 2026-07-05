@@ -6,4 +6,26 @@
         <link rel="stylesheet" href="block.css">
         <title>Vertiblock</title>
     </head>
+    <body>
+        <div id="startScreen">
+            <h2>Vertiblock</h2>
+            <label for="playerName">
+                enter your name to play
+            </label>
+            <input type="text" id="playerName" placeholder="Your Name">
+            <button id="startButton">
+                start game
+            </button>
+        </div>
+        <div id="gameScreen" style="display: none;">
+            <canvas id="canvas"></canvas>
+            <canvas id="canvas1"></canvas>
+            <div style="display: inline">
+                <h2 style="text-align:center" id="curr_score">your score:</h2>
+                <h2 style="text-align:center" id="high_score">high score:</h2> 
+            </div>
+        </div>
+        <script src="vertical.js"></script>
+        <script src="breaker.js"></script>
+    </body>
 </html>
